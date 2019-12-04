@@ -24,17 +24,14 @@ app.get('/api/notes', (req, res) => {
   })
 })
 
-app.get('/notes/:id', (request, response) => {
-  const id = request.params.id
-  const note = notes.find(note => note.id === id)
-
-  if (note) {
-    response.json(note)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/notes/:id', (request, response) => {
+  Note.findById(request.params.id)
+    .then(note => {
+      response.json(note.toJSON())
+    })
 })
-app.delete('/notes/:id', (request, response) => {
+
+app.delete('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   notes = notes.filter(note => note.id !== id)
 
@@ -48,7 +45,7 @@ const generateId = () => {
   return maxId + 1
 }
 
-app.post('/notes', (request, response) => {
+app.post('/api/notes', (request, response) => {
   const body = request.body
 
   if (!body.content) {
@@ -57,16 +54,15 @@ app.post('/notes', (request, response) => {
     })
   }
 
-  const note = {
+  const note = new Note({
     content: body.content,
     important: body.important || false,
     data: new Date(),
-    id: generateId(),
-  }
+  })
 
-  notes = notes.concat(note)
-
-  response.json(note)
+  note.save().then(savedNote => {
+    response.json(savedNote.toJSON())
+  })
 })
 
 const PORT = process.env.PORT || 3001
