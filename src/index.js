@@ -33,9 +33,18 @@ let notes = [
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
+
+// app.get('/api/notes', (req, res) => {
+//   res.json(notes)
+// })
 app.get('/api/notes', (req, res) => {
+  Note.find({}).then(notes => {
   res.json(notes)
+  })
 })
+
+
+
 app.get('/notes/:id', (request, response) => {
   const id = request.params.id
   const note = notes.find(note => note.id === id)
