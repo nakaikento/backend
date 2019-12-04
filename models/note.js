@@ -1,9 +1,10 @@
-var path = require('path')
-const ENV_PATH = path.join(__dirname, '../.env')
+const ENV_PATH = __dirname.slice(0, __dirname.lastIndexOf('/'))
+// console.log(`ENV_PATH is ${ENV_PATH}`)
 require('dotenv').config({ path: ENV_PATH })
 const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
+console.log(`url is ${url}`)
 
 mongoose.connect(url, { useNewUrlParser: true })
   .then(result => {
