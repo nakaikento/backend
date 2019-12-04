@@ -3,7 +3,11 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+// middleware
 app.use(bodyParser.json())
+app.use(cors())
+app.use(express.static('build'))
+
 
 let notes = [
   {
@@ -35,7 +39,7 @@ app.get('/notes', (req, res) => {
 app.get('/notes/:id', (request, response) => {
   const id = request.params.id
   const note = notes.find(note => note.id === id)
-  
+
   if (note) {
     response.json(note)
   } else {
@@ -45,7 +49,7 @@ app.get('/notes/:id', (request, response) => {
 app.delete('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   notes = notes.filter(note => note.id !== id)
-  
+
   response.status(204).end()
 })
 
@@ -58,7 +62,7 @@ const generateId = () => {
 
 app.post('/notes', (request, response) => {
   const body = request.body
-  
+
   if (!body.content) {
     return response.status(400).json({
       error: 'content missing'
@@ -71,9 +75,9 @@ app.post('/notes', (request, response) => {
     data: new Date(),
     id: generateId(),
   }
-  
+
   notes = notes.concat(note)
-  
+
   response.json(note)
 })
 
@@ -87,5 +91,3 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
-app.use(cors())
-app.use(express.static('build'))
