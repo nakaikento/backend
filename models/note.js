@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
-const ENV_PATH = __dirname.slice(0, __dirname.lastIndexOf('/'))
-console.log(`ENV_PATH is ${ENV_PATH}`)
-require('dotenv').config({ path: ENV_PATH })
+// const ENV_PATH = __dirname.slice(0, __dirname.lastIndexOf('/'))
+// console.log(`ENV_PATH is ${ENV_PATH}`)
+// require('dotenv').config({ path: ENV_PATH })
+require('dotenv').config();
+
 const url = process.env.MONGODB_URI
 console.log(`url is ${url}`)
 
