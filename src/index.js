@@ -3,7 +3,7 @@ const app = express()
 require('dotenv').config()
 const bodyParser = require('body-parser')
 
-const Note = require('./models/note')
+const Note = require('../models/note')
 
 app.use(bodyParser.json())
 const cors = require('cors')
